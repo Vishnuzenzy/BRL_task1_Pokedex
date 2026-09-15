@@ -2,12 +2,18 @@ class Pokemon {
   final int id;
   final String name;
   final String image;
+  final List<String> types;
+  final int height;
+  final int weight;
 
 
 Pokemon({
   required this.id,
   required this.name,
   required this.image,
+  this.types = const [],
+  this.height = 0,
+  this.weight = 0,
 });
 
 factory Pokemon.fromJson(Map<String, dynamic> json) {
