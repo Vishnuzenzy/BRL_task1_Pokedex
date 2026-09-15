@@ -29,20 +29,22 @@ class PokemonCard extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(
-                child: CachedNetworkImage(
-                  imageUrl: pokemon.image,
-                  placeholder: (context, url) => const Center(
-                    child: CircularProgressIndicator(strokeWidth: 2),
+                Hero(
+                  tag: pokemon.id,
+                  child: CachedNetworkImage(
+                    imageUrl: pokemon.image,
+                    memCacheHeight: 250,
+                    memCacheWidth: 250,
+                    height: 90,
+                    fit: BoxFit.contain,
+                    placeholder: (context, url) => const Center(
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    ),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.catching_pokemon, size: 50),
                   ),
-                  errorWidget: (context, url, error) => const Icon(
-                    Icons.catching_pokemon,
-                    size: 40,
-                    color: Colors.grey,
-                  ),
-                  fit: BoxFit.contain,
                 ),
-              ),
+              
               const SizedBox(height: 8),
               Text(
                 '#${pokemon.id.toString().padLeft(3, '0')}',

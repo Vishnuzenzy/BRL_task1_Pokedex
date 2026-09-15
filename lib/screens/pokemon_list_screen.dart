@@ -118,7 +118,7 @@ class _PokemonListScreenState extends State<PokemonListScreen> {
                           crossAxisCount: 3,
                           crossAxisSpacing: 8,
                           mainAxisSpacing: 8,
-                          childAspectRatio: 0.95,
+                          childAspectRatio: 0.71,
                         ),
                     itemCount: _filteredPokemon.length,
                     itemBuilder: (context, index) {
