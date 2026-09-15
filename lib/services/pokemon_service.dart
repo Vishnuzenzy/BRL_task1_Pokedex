@@ -36,6 +36,11 @@ class PokemonService {
             .map((t) => t['type']['name'].toString())
             .toList();
 
+        final Map<String, int> statsMap = {};
+        for (var item in data['stats']) {
+          statsMap[item['stat']['name']] = item['base_stat'];
+        }
+
         return Pokemon(
           id: data['id'],
           name: data['name'],
@@ -45,6 +50,7 @@ class PokemonService {
           types: typeList,
           height: data['height'],
           weight: data['weight'],
+          stats: statsMap,
         );
       } else {
         throw Exception('Failed to load details');

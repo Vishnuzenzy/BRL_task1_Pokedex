@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+
 import '../models/pokemon.dart';
 import '../services/pokemon_service.dart';
 
@@ -22,6 +23,7 @@ class _PokemonDetailsScreenState extends State<PokemonDetailsScreen> {
     // Screen open hote hi is specific Pokemon ki details fetch hongi
     _detailsFuture = _pokemonService.fetchPokemonDetails(widget.pokemon.id);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,9 +123,60 @@ class _PokemonDetailsScreenState extends State<PokemonDetailsScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          _buildStatCard('Height', '${detailedPokemon.height / 10} m'),
-                          _buildStatCard('Weight', '${detailedPokemon.weight / 10} kg'),
+                          _buildStatCard(
+                            'Height',
+                            '${detailedPokemon.height / 10} m',
+                          ),
+                          _buildStatCard(
+                            'Weight',
+                            '${detailedPokemon.weight / 10} kg',
+                          ),
                         ],
+                      ),
+                      const SizedBox(height: 20),
+                      const Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Base Stats',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+
+                      // Stats List
+                      Expanded(
+                        child: ListView(
+                          padding: EdgeInsets.zero,
+                          children: [
+                            _buildStatBar(
+                              'HP',
+                              detailedPokemon.stats['hp'] ?? 0,
+                            ),
+                            _buildStatBar(
+                              'Attack',
+                              detailedPokemon.stats['attack'] ?? 0,
+                            ),
+                            _buildStatBar(
+                              'Defense',
+                              detailedPokemon.stats['defense'] ?? 0,
+                            ),
+                            _buildStatBar(
+                              'Sp. Atk',
+                              detailedPokemon.stats['special-attack'] ?? 0,
+                            ),
+                            _buildStatBar(
+                              'Sp. Def',
+                              detailedPokemon.stats['special-defense'] ?? 0,
+                            ),
+                            _buildStatBar(
+                              'Speed',
+                              detailedPokemon.stats['speed'] ?? 0,
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   );
@@ -145,11 +198,61 @@ class _PokemonDetailsScreenState extends State<PokemonDetailsScreen> {
           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 4),
-        Text(
-          label,
-          style: TextStyle(color: Colors.grey[600], fontSize: 14),
-        ),
+        Text(label, style: TextStyle(color: Colors.grey[600], fontSize: 14)),
       ],
+    );
+  }
+
+  // Single Stat Progress Bar Widget
+  Widget _buildStatBar(String label, int value) {
+    // 255 is the standard max base stat in Pokemon games
+    final double progress = (value / 255.0).clamp(0.0, 1.0);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        children: [
+          // Stat Label (e.g. HP, ATK)
+          SizedBox(
+            width: 70,
+            child: Text(
+              label.toUpperCase(),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 12,
+                color: Colors.grey[700],
+              ),
+            ),
+          ),
+          // Exact Number Value
+          SizedBox(
+            width: 35,
+            child: Text(
+              value.toString(),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+            ),
+          ),
+          const SizedBox(width: 8),
+          // Visual Progress Bar
+          Expanded(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: LinearProgressIndicator(
+                value: progress,
+                minHeight: 8,
+                backgroundColor: Colors.grey[200],
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  value >= 70
+                      ? Colors.green
+                      : value >= 50
+                      ? Colors.orange
+                      : Colors.redAccent,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

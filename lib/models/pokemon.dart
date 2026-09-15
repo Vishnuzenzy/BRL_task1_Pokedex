@@ -5,6 +5,7 @@ class Pokemon {
   final List<String> types;
   final int height;
   final int weight;
+  final Map<String, int> stats;
 
 
 Pokemon({
@@ -14,6 +15,7 @@ Pokemon({
   this.types = const [],
   this.height = 0,
   this.weight = 0,
+  this.stats = const {},
 });
 
 factory Pokemon.fromJson(Map<String, dynamic> json) {
