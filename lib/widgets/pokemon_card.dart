@@ -1,0 +1,58 @@
+import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import '../models/pokemon.dart';
+
+class PokemonCard extends StatelessWidget {
+  final Pokemon pokemon;
+
+  const PokemonCard({super.key, required this.pokemon});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 3,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              child: CachedNetworkImage(
+                imageUrl: pokemon.image,
+                placeholder: (context, url) => const Center(
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+                errorWidget: (context, url, error) => const Icon(
+                  Icons.catching_pokemon,
+                  size: 40,
+                  color: Colors.grey,
+                ),
+                fit: BoxFit.contain,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              '#${pokemon.id.toString().padLeft(3, '0')}',
+              style: TextStyle(
+                color: Colors.grey[600],
+                fontWeight: FontWeight.w600,
+                fontSize: 12,
+              ),
+            ),
+            Text(
+              pokemon.name.toUpperCase(),
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
